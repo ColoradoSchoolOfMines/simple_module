@@ -4,6 +4,7 @@
     class="SimpleModule" 
     title="Simple Module"
     author="Matt Wesemann"
+    icon="color.png"
     version="0.1.0" >
   <uses-sdk
       minSdkVersion="0"
