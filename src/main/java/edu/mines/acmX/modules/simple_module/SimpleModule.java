@@ -1,4 +1,4 @@
-package edu.mines.acmX.modules.SimpleModule;
+package edu.mines.acmX.modules.simple_module;
 
 
 import java.awt.image.BufferedImage;
@@ -26,9 +26,8 @@ import edu.mines.acmX.exhibit.stdlib.input_processing.imaging.RGBImageUtilities;
  * A simple module example to demonstrate communicating with the
  * HardwareManager all managing received events within a ProcessingModule
  *   
- * @author Aakash Shah
- * 
- * @see {@link HardwareManager} {@link ProcessingModule}
+ * @author Matt Wesemann
+ *
  */
 public class SimpleModule extends ProcessingModule {
 
