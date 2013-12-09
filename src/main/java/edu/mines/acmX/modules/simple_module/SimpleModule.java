@@ -3,18 +3,12 @@ package edu.mines.acmX.modules.simple_module;
 
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.rmi.RemoteException;
 
-
-import processing.core.PApplet;
+import edu.mines.acmX.exhibit.input_services.hardware.BadDeviceFunctionalityRequestException;
 import processing.core.PConstants;
 import processing.core.PImage;
 import edu.mines.acmX.exhibit.input_services.hardware.BadFunctionalityRequestException;
-import edu.mines.acmX.exhibit.input_services.hardware.DeviceConnectionException;
-import edu.mines.acmX.exhibit.input_services.hardware.HardwareManager;
-import edu.mines.acmX.exhibit.input_services.hardware.HardwareManagerManifestException;
 import edu.mines.acmX.exhibit.input_services.hardware.devicedata.RGBImageInterface;
 import edu.mines.acmX.exhibit.input_services.hardware.UnknownDriverRequest;
 import edu.mines.acmX.exhibit.input_services.hardware.drivers.InvalidConfigurationFileException;
@@ -31,8 +25,6 @@ import edu.mines.acmX.exhibit.stdlib.input_processing.imaging.RGBImageUtilities;
  */
 public class SimpleModule extends ProcessingModule {
 
-
-	public static HardwareManager hm;
 	private RGBImageInterface imageDriver;
 
 	/*
@@ -43,23 +35,6 @@ public class SimpleModule extends ProcessingModule {
 	 */
 	public void setup() {
 		/*
-		 * The hardware manager is a singleton that forms a bridge to
-		 * retrieve and communicate with drivers supported (as specified in the
-		 * HardwareManager manifest file). 
-		 * 
-		 * The actual creation of the manager
-		 * involves loading and verifying the integrity of the manifest file,
-		 * as well as ensuring that a device is connected so that we may
-		 * actually obtain information from it.
-		 */
-		try {
-			hm = HardwareManager.getInstance();
-		} catch (HardwareManagerManifestException e) {
-			System.out.println("Error in the HardwareManager manifest file.");
-			e.printStackTrace();
-		} 
-
-		/*
 		 * To actually retrieve the driver, such that we can receive
 		 * information, requires requesting it from our instance of the
 		 * HardwareManager.
@@ -68,7 +43,7 @@ public class SimpleModule extends ProcessingModule {
 		 * we are going to receive from the driver.
 		 */
 		try {
-			imageDriver = (RGBImageInterface) hm.getInitialDriver("rgbimage");
+			imageDriver = (RGBImageInterface) getInitialDriver("rgbimage");
 			size(imageDriver.getRGBImageWidth(), imageDriver.getRGBImageHeight());
 		} catch (BadFunctionalityRequestException e) {
 			System.out.println("Functionality unknown (may not be supported)");
@@ -78,6 +53,12 @@ public class SimpleModule extends ProcessingModule {
 			e.printStackTrace();
 		} catch (InvalidConfigurationFileException e){
 			System.out.println("InvalidConfigurationFileException");
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			System.out.println("RemoteException");
+			e.printStackTrace();
+		} catch (BadDeviceFunctionalityRequestException e) {
+			System.out.println("BadDeviceFunctionalityRequestException");
 			e.printStackTrace();
 		}
 	}
